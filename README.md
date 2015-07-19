@@ -1,4 +1,3 @@
-as it said in project name~
 okhttp的封装使用见samples项目
 
 1，配置httpconfig
