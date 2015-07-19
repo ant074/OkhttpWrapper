@@ -2,9 +2,11 @@ as it said in project name~
 okhttp的封装使用见samples项目
 
 1，配置httpconfig
+
     连接池配置、超时配置、缓存配置、代理配置、http header配置、cookie配置
 
 2，使用HttpManager
+
     同步get  getSync(String, RequestParams, AdapterCallback)
     异步get  get(String, RequestParams, AdapterCallback)
     同步post  postSync(String, RequestParams, AdapterCallback)
@@ -13,6 +15,7 @@ okhttp的封装使用见samples项目
     取消请求  cancelRequest(Object)
 
 3，使用样例samples项目
+
     下载文件，并提示进度
     public void onClick(View v) {
         String url="http://h.hiphotos.baidu.com/image/pic/item/fc1f4134970a304e725fc8fad3c8a786c9175cb4.jpg";
@@ -23,7 +26,6 @@ okhttp的封装使用见samples项目
         }
         AppContext.httpManager.download(url, new RequestGet(), new AdapterCallback(MainActivity.this, new DataDecodeFile(
             file)) {
-
             @Override
             public void dispatchMessage(Message msg) {
                 if(msg.what == HttpConstant.HTTP_CODE_WAIT) {
@@ -37,6 +39,7 @@ okhttp的封装使用见samples项目
         });
     }
 
+
     异步获取json数据 
     public void onClick(View v) { // 测试图灵机器人
         String content=editText.getText().toString();
@@ -45,13 +48,11 @@ okhttp的封装使用见samples项目
         String url="http://www.tuling123.com/openapi/api?key=94a6de604b0aa81f38f7bfe146971628&userid=001&info=" + content;
         AppContext.httpManager.get(url, new RequestGet(), new AdapterCallback(MainActivity.this,
             new DataDecodeJson<JsonTO>(new JsonTO()) {
-
                 @Override
                 public JSONObject getJSONObject(String jsonString) {
                     return JSONObject.parseObject(jsonString);
                 }
             }) {
-
             @Override
             public void dispatchMessage(Message msg) {
                 if(msg.what == HttpConstant.HTTP_CODE_SUCC) {
@@ -64,11 +65,11 @@ okhttp的封装使用见samples项目
         });
     }
 
+
     简单的url测试
     public void onClick(View v) {
         String url="http://m.baidu.com";
         AppContext.httpManager.get(url, new RequestGet(), new AdapterCallback(MainActivity.this, new DataDecodeString()) {
-
             @Override
             public void dispatchMessage(Message msg) {
                 text.setText(msg.obj.toString());
@@ -78,5 +79,4 @@ okhttp的封装使用见samples项目
         for(String str: cookies) {
             Log.e(TAG, "cookie=" + str);
         }
-
     }
