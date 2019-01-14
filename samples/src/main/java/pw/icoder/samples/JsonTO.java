@@ -1,12 +1,6 @@
 package pw.icoder.samples;
 
-import com.alibaba.fastjson.JSONObject;
-
-import pw.icoder.okhttpwrapper.data.TOFromJsonInterface;
-import pw.icoder.okhttpwrapper.exception.DataDecodeException;
-
-
-public class JsonTO implements TOFromJsonInterface<JsonTO> {
+public class JsonTO {
 
     private Integer code;
 
@@ -17,7 +11,7 @@ public class JsonTO implements TOFromJsonInterface<JsonTO> {
     }
 
     public void setCode(Integer code) {
-        this.code=code;
+        this.code = code;
     }
 
     public String getText() {
@@ -25,16 +19,7 @@ public class JsonTO implements TOFromJsonInterface<JsonTO> {
     }
 
     public void setText(String text) {
-        this.text=text;
-    }
-
-    @Override
-    public JsonTO getTOFromJson(JSONObject obj) throws DataDecodeException {
-        if(obj == null)
-            return null;
-        this.code=obj.containsKey("code") ? obj.getInteger("code") : null;
-        this.text=obj.containsKey("text") ? obj.getString("text") : null;
-        return this;
+        this.text = text;
     }
 
 }

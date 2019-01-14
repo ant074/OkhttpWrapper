@@ -2,7 +2,8 @@ package pw.icoder.okhttpwrapper.data;
 
 import org.json.JSONObject;
 
-import com.squareup.okhttp.RequestBody;
+import okhttp3.RequestBody;
+
 
 public class RequestPostJson extends RequestParams {
 
@@ -11,18 +12,18 @@ public class RequestPostJson extends RequestParams {
     private JSONObject mJsonObj;
 
     public RequestPostJson(JSONObject jsonObj) {
-        this.mJsonObj=jsonObj;
+        this.mJsonObj = jsonObj;
     }
 
     public RequestPostJson(String json) {
-        this.mJson=json;
+        this.mJson = json;
     }
 
     @Override
     public RequestBody getRequestBody() {
-        if(mJson != null) {
+        if (mJson != null) {
             return RequestBody.create(MEDIA_TYPE_JSON, mJson);
-        } else if(mJsonObj != null) {
+        } else if (mJsonObj != null) {
             RequestBody.create(MEDIA_TYPE_JSON, mJsonObj.toString());
         }
         return null;

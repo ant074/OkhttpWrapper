@@ -1,15 +1,15 @@
 package pw.icoder.okhttpwrapper.data;
 
-import java.io.IOException;
-
 import android.os.Handler;
 
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import java.io.IOException;
+
+import okhttp3.Response;
+
 
 public interface IDataDecode {
 
-    public void handleOnFailure(Handler handler, Request req, IOException e);
+    void handleOnFailure(Handler handler, IOException e);
 
-    public void handleOnSucc(Handler handler, Response res);
+    void handleOnSucc(Handler handler, Response res);
 }

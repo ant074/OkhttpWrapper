@@ -1,9 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.2'
     defaultConfig {
+        applicationId "pw.icoder.samples"
         minSdkVersion 9
         targetSdkVersion 22
         versionCode 1
@@ -11,16 +12,23 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     productFlavors {
     }
+
+    repositories {
+        flatDir {
+            dirs 'libs'//, '../third/libs'
+        }
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.+'
-    compile project(':okhttpwrapper')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation (group: 'com.android.support', name: 'appcompat-v7', version: '22.+')
+    implementation 'com.alibaba:fastjson:1.1.56.android'
+    implementation project(':okhttpwrapper')
 }

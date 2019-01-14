@@ -1,35 +1,46 @@
 package pw.icoder.okhttpwrapper.common;
 
-import java.io.IOException;
-
-import pw.icoder.okhttpwrapper.data.IDataDecode;
-
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
+import android.os.Message;
 
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+import pw.icoder.okhttpwrapper.data.IDataDecode;
 
 public class AdapterCallback extends Handler implements Callback {
 
     Context mContext;
-
     IDataDecode mDataDecode;
+    IDataCallback responseCallback;
 
     public AdapterCallback(Context context, IDataDecode decode) {
-        this.mContext=context;
-        this.mDataDecode=decode;
+        this.mContext = context;
+        this.mDataDecode = decode;
+    }
+
+    public void setResponseCallback(IDataCallback responseCallback) {
+        this.responseCallback = responseCallback;
     }
 
     @Override
-    public void onFailure(Request req, IOException e) {
-        mDataDecode.handleOnFailure(this, req, e);
-    };
+    public void onFailure(Call call, IOException e) {
+        mDataDecode.handleOnFailure(this, e);
+    }
 
     @Override
-    public void onResponse(Response res) throws IOException {
-        mDataDecode.handleOnSucc(this, res);
+    public void onResponse(Call call, Response response) throws IOException {
+        mDataDecode.handleOnSucc(this, response);
     }
+
+    @Override
+    public void dispatchMessage(Message msg) {
+        if (responseCallback != null) {
+            responseCallback.handleMessage(msg);
+        }
+    }
+
 }

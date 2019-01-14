@@ -2,24 +2,22 @@ package pw.icoder.okhttpwrapper.data;
 
 import java.io.IOException;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okio.BufferedSink;
 
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.RequestBody;
 
 public class RequestPostBufferedSink extends RequestParams {
 
     private BufferedSink sink;
 
     public RequestPostBufferedSink(BufferedSink sink) {
-        this.sink=sink;
+        this.sink = sink;
     }
 
     @Override
     public RequestBody getRequestBody() {
-        if(sink == null)
-            return null;
-        RequestBody requestBody=new RequestBody() {
+        RequestBody requestBody = new RequestBody() {
 
             @Override
             public MediaType contentType() {

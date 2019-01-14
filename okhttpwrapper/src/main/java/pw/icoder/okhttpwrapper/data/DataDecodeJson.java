@@ -1,55 +1,50 @@
 package pw.icoder.okhttpwrapper.data;
 
-import java.io.IOException;
-
-import pw.icoder.okhttpwrapper.common.HttpConstant;
-import pw.icoder.okhttpwrapper.exception.DataDecodeException;
-
 import android.os.Handler;
 import android.os.Message;
 
 import com.alibaba.fastjson.JSONObject;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import com.alibaba.fastjson.TypeReference;
 
-public abstract class DataDecodeJson<T> implements IDataDecode {
+import java.io.IOException;
 
-    public static final String TAG=DataDecodeJson.class.getSimpleName();
+import okhttp3.Response;
+import pw.icoder.okhttpwrapper.common.HttpConstant;
 
-    private TOFromJsonInterface<T> to;
+public  class DataDecodeJson<T> implements IDataDecode {
 
-    public DataDecodeJson(TOFromJsonInterface<T> to) {
-        this.to=to;
+    public static final String TAG = DataDecodeJson.class.getSimpleName();
+
+    private TypeReference<T> typeReference;
+
+    public DataDecodeJson(TypeReference<T> typeReference) {
+        this.typeReference = typeReference;
     }
 
     @Override
-    public void handleOnFailure(Handler handler, Request req, IOException e) {
-        Message msg=handler.obtainMessage();
-        msg.what=HttpConstant.HTTP_CODE_FAIL;
-        msg.obj=e.getMessage();
+    public void handleOnFailure(Handler handler, IOException e) {
+        Message msg = handler.obtainMessage();
+        msg.what = HttpConstant.HTTP_CODE_FAIL;
+        msg.obj = e.getMessage();
         msg.sendToTarget();
     }
 
     @Override
     public void handleOnSucc(Handler handler, Response res) {
-        Message msg=handler.obtainMessage();
-        msg.what=HttpConstant.HTTP_CODE_SUCC;
+        Message msg = handler.obtainMessage();
+        msg.what = HttpConstant.HTTP_CODE_SUCC;
         try {
-            String jsonString=res.body().string();
-            if(jsonString == null)
-                msg.obj=null;
-            msg.obj=to.getTOFromJson(getJSONObject(jsonString));
-        } catch(IOException e) {
-            msg.what=HttpConstant.DATA_DECODE_ERR;
-            msg.obj=HttpConstant.READ_DATA_DECODE_ERR_MSG;
-            e.printStackTrace();
-        } catch(DataDecodeException e) {
-            msg.what=HttpConstant.DATA_DECODE_ERR;
-            msg.obj=HttpConstant.READ_DATA_DECODE_ERR_MSG;
+            String jsonString = res.body().string();
+            if (jsonString == null) {
+                msg.obj = null;
+            }
+            msg.obj = JSONObject.parseObject(jsonString, typeReference);
+        } catch (Exception e) {
+            msg.what = HttpConstant.DATA_DECODE_ERR;
+            msg.obj = HttpConstant.READ_DATA_DECODE_ERR_MSG;
             e.printStackTrace();
         }
         msg.sendToTarget();
     }
 
-    public abstract JSONObject getJSONObject(String jsonString);
 }

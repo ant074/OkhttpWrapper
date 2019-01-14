@@ -1,6 +1,7 @@
 package pw.icoder.okhttpwrapper.data;
 
-import com.squareup.okhttp.RequestBody;
+
+import okhttp3.RequestBody;
 
 public class RequestGet extends RequestParams {
 

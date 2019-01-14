@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/OkhttpWrapper.iml" filepath="$PROJECT_DIR$/OkhttpWrapper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/OkhttpWrapper.iml" filepath="$PROJECT_DIR$/.idea/OkhttpWrapper.iml" />
       <module fileurl="file://$PROJECT_DIR$/okhttpwrapper/okhttpwrapper.iml" filepath="$PROJECT_DIR$/okhttpwrapper/okhttpwrapper.iml" />
       <module fileurl="file://$PROJECT_DIR$/samples/samples.iml" filepath="$PROJECT_DIR$/samples/samples.iml" />
     </modules>
   </component>
 </project>
-

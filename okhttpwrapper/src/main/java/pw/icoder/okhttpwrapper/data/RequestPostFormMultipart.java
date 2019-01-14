@@ -6,18 +6,17 @@ import okhttp3.Headers;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class RequestPostMultipart extends RequestParams {
+public class RequestPostFormMultipart extends RequestParams {
 
     private String[][] postData;
-
     private File[] files;
 
-    private Headers[] fileHeaders;
+    private String[] fileNames;
 
-    public RequestPostMultipart(String[][] postData, File[] files, Headers[] fileHeaders) {
+    public RequestPostFormMultipart(String[][] postData, String[] fileNames, File[] files) {
         this.postData = postData;
+        this.fileNames = fileNames;
         this.files = files;
-        this.fileHeaders = fileHeaders;
     }
 
     @Override
@@ -31,11 +30,7 @@ public class RequestPostMultipart extends RequestParams {
         }
         if (files != null) {
             for (int i = 0; i < files.length; i++) {
-                if (fileHeaders != null && fileHeaders.length > i) {
-                    builder.addPart(fileHeaders[i], RequestBody.create(MEDIA_TYPE_JPEG, files[i]));
-                } else {
-                    builder.addPart(RequestBody.create(MEDIA_TYPE_JPEG, files[i]));
-                }
+                builder.addFormDataPart(fileNames[i], files[i].getName(), RequestBody.create(MEDIA_TYPE_JPEG, files[i]));
             }
         }
         return builder.build();

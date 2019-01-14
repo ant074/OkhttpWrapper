@@ -1,11 +1,10 @@
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.2"
 
     defaultConfig {
-        applicationId "pw.icoder.okhttpwrapper"
         minSdkVersion 9
         targetSdkVersion 22
         versionCode 1
@@ -13,14 +12,16 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.+'
-    compile 'com.squareup.okhttp:okhttp:2.3.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly(group: 'com.android.support', name: 'appcompat-v7', version: '22.+')
+    compileOnly 'com.alibaba:fastjson:1.1.56.android'
+    compile 'com.squareup.okhttp3:okhttp:3.7.0'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.4.1'
 }

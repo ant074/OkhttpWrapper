@@ -1,19 +1,20 @@
 package pw.icoder.okhttpwrapper.data;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import pw.icoder.okhttpwrapper.HttpConfig;
 
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.RequestBody;
 
 public abstract class RequestParams {
 
-    public static final MediaType MEDIA_TYPE_MARKDOWN=MediaType.parse("text/x-markdown; charset=utf-8");
+    public static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");
 
-    public static final MediaType MEDIA_TYPE_PNG=MediaType.parse("image/png");
+    public static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+    public static final MediaType MEDIA_TYPE_JPEG = MediaType.parse("image/jpeg");
 
-    public static final MediaType MEDIA_TYPE_JSON=MediaType.parse("application/json; charset=utf-8");
+    public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
 
-    public static final MediaType MEDIA_TYPE_XML=MediaType.parse("application/xml; charset=utf-8");
+    public static final MediaType MEDIA_TYPE_XML = MediaType.parse("application/xml; charset=utf-8");
 
     protected String url;
 
@@ -26,7 +27,7 @@ public abstract class RequestParams {
     }
 
     public void setTag(Object tag) {
-        this.tag=tag;
+        this.tag = tag;
     }
 
     public HttpConfig getHttpConfig() {
@@ -34,9 +35,8 @@ public abstract class RequestParams {
     }
 
     public void setHttpConfig(HttpConfig httpConfig) {
-        this.httpConfig=httpConfig;
+        this.httpConfig = httpConfig;
     }
 
     public abstract RequestBody getRequestBody();
-
 }
