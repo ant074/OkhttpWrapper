@@ -23,15 +23,16 @@ okhttp的封装使用见samples项目
             Log.e(TAG, file.getParent());
             new File(file.getParent()).mkdirs();
         }
-        AppContext.httpManager.download(url, new RequestGet(), new AdapterCallback(MainActivity.this, new DataDecodeFile(
-            file)) {
+        DataDecodeFile dataDecodeFile = new DataDecodeFile(file);
+        AdapterCallback adapterCallback = new AdapterCallback(MainActivity.this, dataDecodeFile);
+        adapterCallback.setResponseCallback(new IDataCallback() {
             @Override
-            public void dispatchMessage(Message msg) {
-                if(msg.what == HttpConstant.HTTP_CODE_WAIT) {
-                    int rate=msg.arg1;
+            public void handleMessage(Message msg) {
+                if (msg.what == HttpConstant.HTTP_CODE_WAIT) {
+                    int rate = msg.arg1;
                     Log.e(TAG, "rate=" + String.valueOf(rate));
                     text.setText(String.valueOf(rate));
-                } else if(msg.what == HttpConstant.HTTP_CODE_SUCC) {
+                } else if (msg.what == HttpConstant.HTTP_CODE_SUCC) {
                     text.setText("下载完成");
                 }
             }
@@ -45,18 +46,14 @@ okhttp的封装使用见samples项目
         if(content.length() == 0)
             return;
         String url="http://www.tuling123.com/openapi/api?key=94a6de604b0aa81f38f7bfe146971628&userid=001&info=" + content;
-        AppContext.httpManager.get(url, new RequestGet(), new AdapterCallback(MainActivity.this,
-            new DataDecodeJson<JsonTO>(new JsonTO()) {
-                @Override
-                public JSONObject getJSONObject(String jsonString) {
-                    return JSONObject.parseObject(jsonString);
-                }
-            }) {
+        DataDecodeJson<JsonTO> decodeJson = new DataDecodeJson(new TypeReference<JsonTO>() {});
+        AdapterCallback adapterCallback = new AdapterCallback(MainActivity.this, decodeJson);
+        adapterCallback.setResponseCallback(new IDataCallback() {
             @Override
-            public void dispatchMessage(Message msg) {
-                if(msg.what == HttpConstant.HTTP_CODE_SUCC) {
-                    JsonTO to=(JsonTO)msg.obj;
-                    if(to == null)
+            public void handleMessage(Message msg) {
+                if (msg.what == HttpConstant.HTTP_CODE_SUCC) {
+                    JsonTO to = (JsonTO) msg.obj;
+                    if (to == null)
                         return;
                     text.setText(to.getText());
                 }
@@ -68,14 +65,16 @@ okhttp的封装使用见samples项目
     简单的url测试
     public void onClick(View v) {
         String url="http://m.baidu.com";
-        AppContext.httpManager.get(url, new RequestGet(), new AdapterCallback(MainActivity.this, new DataDecodeString()) {
+        AdapterCallback adapterCallback = new AdapterCallback(MainActivity.this, new DataDecodeString());
+        adapterCallback.setResponseCallback(new IDataCallback() {
             @Override
-            public void dispatchMessage(Message msg) {
+            public void handleMessage(Message msg) {
                 text.setText(msg.obj.toString());
             }
         });
-        List<String> cookies=getSyncCookies();
-        for(String str: cookies) {
+        AppContext.httpManager.get(url, new RequestGet(), adapterCallback);
+        List<String> cookies = getSyncCookies(url);
+        for (String str : cookies) {
             Log.e(TAG, "cookie=" + str);
         }
     }
